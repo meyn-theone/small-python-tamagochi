@@ -126,7 +126,7 @@ while True:
     action = input("Enter an action:").strip().lower()
     myPet.perform_action(action)
    
-    if not myPet.alive:
+    if myPet.alive = False:
         break
  
    
