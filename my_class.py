@@ -1,5 +1,6 @@
 from random import randint
 from abc import ABC, abstractmethod
+
 class Tamagochi(ABC):
         
         def __init__(self, name):
