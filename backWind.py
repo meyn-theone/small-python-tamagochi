@@ -96,3 +96,4 @@ for i, stats in enumerate(right_stats):
     stats.grid (row = i, column = 1, padx = 50, sticky = "e", pady=5)
 
 app.mainloop()
+

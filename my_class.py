@@ -1,5 +1,7 @@
 from random import randint
 from abc import ABC, abstractmethod
+import customtkinter as ctk
+import subprocess 
 
 class Tamagochi(ABC):
         
@@ -165,29 +167,60 @@ class dog(Tamagochi):
     def callAnimal(self):
         print("Dog run to owner all across the house")
     
-    
 
-def main():
-    
-    name = input("Enter name for your pet: ")
+class FrontClass(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.geometry("360x640")
+        self.title("MyTamagochi")
+        self.resizable(False, False)
+        self.setup_gui()
 
-    while True:
-        animalType = input("choose animal: ")
-        if animalType == "cat":
-            pet = cat(name)
-            break
-        elif animalType == "dog":
-            pet = dog(name)
-            break
+    def setup_gui(self):
+        self.backgr = ctk.CTkFrame(self, width=360, height=640, fg_color="black")
+        self.backgr.pack(fill="both", expand=True)
+
+        self.frame1 = ctk.CTkFrame(self.backgr, fg_color="white", corner_radius=5)
+        self.frame1.pack(pady=(100, 20))
+
+        self.label1 = ctk.CTkLabel(self.frame1, text="TAMAGOCHI", text_color="black", font=("", 20, "bold"))
+        self.label1.pack(pady=(5, 2), padx=6)
+
+        self.frame2 = ctk.CTkFrame(self.backgr, fg_color="white", corner_radius=5)
+        self.frame2.pack(pady=(30, 15))
+
+        self.label2 = ctk.CTkLabel(self.frame2, text="Type a name for your pet", text_color="black", font=("", 16, "bold"))
+        self.label2.pack(pady=(1, 0), padx=5)
+
+        self.entry1 = ctk.CTkEntry(self.backgr, placeholder_text="Enter:", font=("Arial", 16), placeholder_text_color="white", border_color="red", width=180, corner_radius=0)
+        self.entry1.pack(pady=5)
+
+        self.entry1.bind("<Return>", self.get_value)
+
+    def get_value(self, event=None):
+        name = self.entry1.get()
+        self.entry2 = ctk.CTkEntry(self.backgr, placeholder_text="Enter animal type", font=("Arial", 16), placeholder_text_color="white", border_color="red", width=180, corner_radius=0)
+        self.entry2.pack(pady=5)
+
+        self.buttonplay = ctk.CTkButton(self.backgr, command=self.select_animal, text="GET TAMAGOCHI", fg_color="#0FDE23", text_color="white", corner_radius=50, height=70, font=("Lato", 15, "bold"), hover_color="#0E8144")
+        self.buttonplay.pack(pady=20, padx=60)
+
+    def select_animal(self):
+        animal_type = self.entry2.get()
+
+        if animal_type.lower() == "cat":
+            pet = cat(self.entry1.get())
+            print("You chose a cat!")
+        elif animal_type.lower() == "dog":
+            pet = dog(self.entry1.get())
+            print("You chose a dog!")
         else:
-            print("U can choose only between dog and cat")
-            break
+            print("Invalid choice. Please choose either 'cat' or 'dog'.")
 
-    while True:
-        action = input("Enter an action:").strip().lower()
-        pet.perform_action(action)
+
+# Создание и запуск интерфейса
+app = FrontClass()
+app.mainloop()
+
+
         
-        if not pet.alive:
-            break
-
-main()
